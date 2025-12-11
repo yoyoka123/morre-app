@@ -5,13 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { Settings, PenLine, Mail, CalendarCheck, Battery, ChevronDown, Drama, Hexagon, Quote } from "lucide-react";
-import { cn } from '@/lib/utils';
 
 export default function Home() {
   const router = useRouter();
   const [characterName, setCharacterName] = useState('明日香');
   const [characterAvatar, setCharacterAvatar] = useState('/character.png');
-  const [expandedCards, setExpandedCards] = useState<number[]>([]);
 
   // 从 localStorage 加载智能体数据
   useEffect(() => {
@@ -49,14 +47,6 @@ export default function Home() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
-
-  const toggleCardExpand = (index: number) => {
-    if (expandedCards.includes(index)) {
-      setExpandedCards(expandedCards.filter(i => i !== index));
-    } else {
-      setExpandedCards([...expandedCards, index]);
-    }
-  };
 
   return (
     <div className="min-h-screen max-w-md mx-auto bg-[#F8F6F1] text-[#1f1f1f] font-sans pb-24">
@@ -191,7 +181,7 @@ export default function Home() {
             {/* 100 Little Things Card 1 */}
             <div
               className="bg-white rounded-[24px] p-5 shadow-[0_2px_15px_-4px_rgba(0,0,0,0.05)] cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden"
-              onClick={() => toggleCardExpand(0)}
+              onClick={() => router.push('/achievements')}
             >
                {/* Large Quote Mark Decoration */}
                <Quote className="absolute top-4 left-4 w-8 h-8 text-[#FFF6E5] fill-current transform rotate-180 z-0" />
@@ -203,10 +193,7 @@ export default function Home() {
                  <span className="text-[10px] text-gray-300 font-medium">12-15 10:00</span>
                </div>
                
-               <p className={cn(
-                   "text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1",
-                   !expandedCards.includes(0) && "line-clamp-3"
-               )}>
+               <p className="text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1 line-clamp-3">
                    刚好附近有枫叶街道，大概只有几百米哦~ 要不要一起去看看，我可以给你带路，现在正是最美的季节呢！
                </p>
 
@@ -224,7 +211,7 @@ export default function Home() {
              {/* 100 Little Things Card 2 */}
              <div
                className="bg-white rounded-[24px] p-5 shadow-[0_2px_15px_-4px_rgba(0,0,0,0.05)] cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden"
-               onClick={() => toggleCardExpand(1)}
+               onClick={() => router.push('/achievements')}
              >
                 <Quote className="absolute top-4 left-4 w-8 h-8 text-[#FFF6E5] fill-current transform rotate-180 z-0" />
 
@@ -235,10 +222,7 @@ export default function Home() {
                   <span className="text-[10px] text-gray-300 font-medium">12-15 10:00</span>
                 </div>
                 
-                <p className={cn(
-                   "text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1",
-                   !expandedCards.includes(1) && "line-clamp-2"
-                )}>
+                <p className="text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1 line-clamp-2">
                    元旦到了，要不要一起去滑雪
                 </p>
 
