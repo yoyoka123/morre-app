@@ -2,6 +2,7 @@ import Link from "next/link";
 import { letters } from "@/lib/data";
 import { ChevronLeft, Play, Sparkles, Image as ImageIcon, MessageSquare, Footprints } from "lucide-react";
 import { notFound } from "next/navigation";
+import PhotoGallery from "@/components/PhotoGallery";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -67,29 +68,14 @@ export default async function LetterPage({ params }: Props) {
             </div>
         </div>
         
-        {/* Photo Gallery Simulation */}
-        <div className="flex gap-2 mb-12 relative h-28 justify-center">
-            {[
-                'https://filecdn-images.xingyeai.com/tool/edit_images_gemini/image_0_95f466ac8fe34d4b84d5428844013b66.jpg',
-                'https://filecdn-images.xingyeai.com/tool/edit_images_gemini/image_0_d85e93c10ced4138b31c196b4718a771.png',
-                '/character.png'
-            ].map((src, index) => (
-                <div
-                    key={index}
-                    className="w-24 h-24 bg-gray-200 border-4 border-white shadow-md absolute top-0 transition-transform hover:z-10 hover:scale-105 duration-300"
-                    style={{
-                        transform: `rotate(${(index - 1) * 6}deg) translateX(${(index - 1) * 50}px)`,
-                        zIndex: index
-                    }}
-                >
-                    <img
-                        src={src}
-                        alt="Memory"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-            ))}
-        </div>
+        {/* Photo Gallery */}
+        <PhotoGallery
+          images={[
+            'https://filecdn-images.xingyeai.com/tool/edit_images_gemini/image_0_95f466ac8fe34d4b84d5428844013b66.jpg',
+            'https://filecdn-images.xingyeai.com/tool/edit_images_gemini/image_0_d85e93c10ced4138b31c196b4718a771.png',
+            '/character.png'
+          ]}
+        />
 
         {/* Today's Report */}
         <div className="mt-8 mb-8">
