@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { Settings, PenLine, Mail, CalendarCheck, Battery, ChevronDown, Drama, Hexagon, Quote } from "lucide-react";
+import { PenLine, Mail, CalendarCheck, Battery, Drama, Hexagon, Quote } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { todayTasks } from '@/lib/data';
 
@@ -189,9 +189,7 @@ export default function Home() {
                </div>
                <div className="flex flex-col items-start gap-0.5">
                   <span className="font-bold text-gray-900 text-[13px]">对我的认识</span>
-                  <div className="flex items-center text-[10px] text-gray-400 font-medium">
-                    更新 <ChevronDown className="w-2.5 h-2.5 -rotate-90 ml-0.5" />
-                  </div>
+                  <span className="text-[10px] text-gray-400 font-medium">12.9更新</span>
                </div>
             </div>
           </Link>
