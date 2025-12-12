@@ -5,11 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { Settings, PenLine, Mail, CalendarCheck, Battery, ChevronDown, Drama, Hexagon, Quote } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { todayTasks } from '@/lib/data';
 
 export default function Home() {
   const router = useRouter();
   const [characterName, setCharacterName] = useState('明日香');
   const [characterAvatar, setCharacterAvatar] = useState('/character.png');
+  const [userAvatar, setUserAvatar] = useState('/character.png'); // Default user avatar
 
   // 从 localStorage 加载智能体数据
   useEffect(() => {
@@ -28,12 +31,18 @@ export default function Home() {
           console.error('Failed to parse agentData:', e);
         }
       }
+      
+      // Load user avatar if available (mocking this or using a placeholder/default)
+      // For now, let's just use the Unsplash image used in settings as "User Avatar" default if not set
+      // Or stick to /character.png if that's what was requested, but user said "Avatar is user avatar"
+      // implying it should look like a user. 
+      // I'll use the one from settings page as a better default for "User".
+      setUserAvatar("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80");
     };
 
     loadAgentData();
     window.addEventListener('popstate', loadAgentData);
     window.addEventListener('storage', loadAgentData);
-    // 页面可见性变化时重新加载数据（从其他页面返回时）
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         loadAgentData();
@@ -47,6 +56,16 @@ export default function Home() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
+
+  const [expandedCards, setExpandedCards] = useState<number[]>([]);
+
+  const toggleCardExpand = (index: number) => {
+    if (expandedCards.includes(index)) {
+      setExpandedCards(expandedCards.filter(i => i !== index));
+    } else {
+      setExpandedCards([...expandedCards, index]);
+    }
+  };
 
   return (
     <div className="min-h-screen max-w-md mx-auto bg-[#F8F6F1] text-[#1f1f1f] font-sans pb-24">
@@ -67,17 +86,21 @@ export default function Home() {
         </div>
         
         <div className="flex items-center gap-3">
-          <Link href="/settings">
+          {/* Hexagon -> Hardware Settings (/device) */}
+          <Link href="/device">
             <button className="p-2.5 rounded-full bg-[#F2EFE9] hover:bg-[#EAE6DD] transition-colors">
               <Hexagon className="w-5 h-5 text-gray-900 stroke-[2.5]" />
             </button>
           </Link>
-          <Link href="/device">
+
+          {/* User Avatar -> User Profile/Settings (/settings) */}
+          <Link href="/settings">
             <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow-sm relative cursor-pointer">
-              <img
-                src={characterAvatar}
+              <Image 
+                src={userAvatar}
                 alt="User Avatar"
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
           </Link>
@@ -94,10 +117,12 @@ export default function Home() {
              
              {/* Screen/Image Area */}
              <div className="absolute inset-4 rounded-full overflow-hidden bg-black shadow-inner border-[8px] border-[#D4C5B0]/20">
-              <img
+              <Image 
                 src={characterAvatar}
                 alt="Character"
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                className="object-cover"
+                priority
               />
               {/* Screen Reflection/Glare */}
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none rounded-full"></div>
@@ -134,7 +159,7 @@ export default function Home() {
                </div>
                <div className="flex flex-col items-start gap-0.5">
                   <span className="font-bold text-gray-900 text-[13px]">互动事件</span>
-                  <span className="text-[10px] text-gray-400 font-medium">今日2/5</span>
+                  <span className="text-[10px] text-gray-400 font-medium">{todayTasks.filter(t => !t.isCompleted).length}件待完成</span>
                </div>
             </div>
           </Link>
@@ -181,7 +206,7 @@ export default function Home() {
             {/* 100 Little Things Card 1 */}
             <div
               className="bg-white rounded-[24px] p-5 shadow-[0_2px_15px_-4px_rgba(0,0,0,0.05)] cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden"
-              onClick={() => router.push('/achievements')}
+              onClick={() => toggleCardExpand(0)}
             >
                {/* Large Quote Mark Decoration */}
                <Quote className="absolute top-4 left-4 w-8 h-8 text-[#FFF6E5] fill-current transform rotate-180 z-0" />
@@ -193,7 +218,10 @@ export default function Home() {
                  <span className="text-[10px] text-gray-300 font-medium">12-15 10:00</span>
                </div>
                
-               <p className="text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1 line-clamp-3">
+               <p className={cn(
+                   "text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1",
+                   !expandedCards.includes(0) && "line-clamp-3"
+               )}>
                    刚好附近有枫叶街道，大概只有几百米哦~ 要不要一起去看看，我可以给你带路，现在正是最美的季节呢！
                </p>
 
@@ -211,7 +239,7 @@ export default function Home() {
              {/* 100 Little Things Card 2 */}
              <div
                className="bg-white rounded-[24px] p-5 shadow-[0_2px_15px_-4px_rgba(0,0,0,0.05)] cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden"
-               onClick={() => router.push('/achievements')}
+               onClick={() => toggleCardExpand(1)}
              >
                 <Quote className="absolute top-4 left-4 w-8 h-8 text-[#FFF6E5] fill-current transform rotate-180 z-0" />
 
@@ -222,7 +250,10 @@ export default function Home() {
                   <span className="text-[10px] text-gray-300 font-medium">12-15 10:00</span>
                 </div>
                 
-                <p className="text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1 line-clamp-2">
+                <p className={cn(
+                   "text-gray-800 text-[15px] leading-relaxed font-bold transition-all mb-4 relative z-10 pl-1",
+                   !expandedCards.includes(1) && "line-clamp-2"
+                )}>
                    元旦到了，要不要一起去滑雪
                 </p>
 
