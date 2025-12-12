@@ -42,7 +42,7 @@ export default function AchievementsPage() {
               onClick={() => router.push('/achievements/wall')}
               className="flex items-center gap-1 pl-3 pr-2 py-1.5 bg-[#EAE6DC] rounded-full active:scale-95 transition-transform"
             >
-              <span className="text-[11px] font-medium text-[#6B665F]">我的成就徽章墙</span>
+              <span className="text-[11px] font-medium text-[#6B665F]">我们的100件小事</span>
               <span className="text-[10px] text-[#6B665F]">▶</span>
             </button>
           </div>
