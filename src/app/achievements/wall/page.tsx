@@ -172,7 +172,7 @@ export default function BadgeWallPage() {
         >
           <ChevronLeft size={24} />
         </button>
-        <h1 className="text-lg font-bold text-gray-900">勋章墙</h1>
+        <h1 className="text-lg font-bold text-gray-900">我们的100件小事</h1>
       </div>
 
       {/* Top 10 Section */}
@@ -220,7 +220,7 @@ export default function BadgeWallPage() {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-1">
             <Sparkles className="w-4 h-4 text-gray-800 fill-current" />
-            <h2 className="text-base font-bold text-gray-800">勋章墙</h2>
+            <h2 className="text-base font-bold text-gray-800">小事墙</h2>
           </div>
           <span className="text-sm text-gray-900 font-bold">
             已获得 {obtainedCount} <span className="text-gray-400 font-normal">/ {totalCount}</span>
